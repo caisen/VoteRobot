@@ -11,26 +11,50 @@ def ActionFactory():
 #
 
 # Action base class
-class Action
-	def __init__(self):
+class Action:
+	def __init__(self, params):
 		pass
 
-# Action: get new ip
-class GetIP : Action
-	def __init__(self):
+	def process():
+		'''implement by subclasses'''
 		pass
+
+	def status():
+		'''0, succeed; otherwise, failed'''
+		return 0
 
 # Action: refresh verify code
-class RefreshVerfyCode : Action
-	def __init__(self):
+class RefreshVerfyCode(Action):
+	def __init__(self, params):
+		Action.__init__(params)
 		pass
+
+	def process():
+		pass
+
+	def status():
+		return 0
 
 # Action: fake share
-class FakeShare : Action
-	def __init__(self):
+class FakeShare(Action):
+	def __init__(self, params):
+		Action.__init__(params)
 		pass
 
+	def process():
+		pass
+
+	def status():
+		return 0
+
 # Action: Vote
-class Vote : Action
-	def __init__(self):
-		pass		
+class Vote(Action):
+	def __init__(self, params):
+		Action.__init__(params)
+		pass
+
+	def process():
+		pass
+
+	def status():
+		return 0

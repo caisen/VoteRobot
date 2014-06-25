@@ -1,18 +1,22 @@
 
+import Action
 
+def OneKick():
+	''' vote once'''
+	actionQueue = [FakeShare(), RefreshVerfyCode(), Vote(), RefreshVerfyCode(), Vote()]
+		for action in actionQueue:
+			action.process()
+			if action.status() != 0:
+				return
 
-def GetNewIp():
-	'''get new ip address'''
-	pass
+def Start():
+	for true:
 
-def FakeShare():
-	'''fake share action'''
-	pass
+		# wait a few seconds here
 
-def RefreshVerifyCode():
-	'''refresh verfy code'''
-	pass
-
-def Vote():
-	'''Now Vote'''
-	pass
+		OneKick();
+		
+#
+# Start voting
+#
+Start()
