@@ -2,6 +2,9 @@
 # Actions
 #
 
+import time
+from HttpClient import *
+
 def ActionFactory():
 	''' action factory, generate actions object'''
 	pass
@@ -12,49 +15,42 @@ def ActionFactory():
 
 # Action base class
 class Action:
-	def __init__(self, params):
-		pass
+	def __init__(self):
+		self._status = 200
+		self.url = 'http://votes.cnr.cn/ajax.php'
+		self.formData = self.getFormData()
+		self.headers = HttpClient.getHeaders()
+		self.http = getHtppClient()
 
-	def process():
+	def process(self):
 		'''implement by subclasses'''
-		pass
+		self.response, self.content = self.http.request(self.url, self.headers, self.formData)
+		self._status = self.response['status']
 
-	def status():
-		'''0, succeed; otherwise, failed'''
-		return 0
+	def status(self):
+		'''200, succeed; otherwise, failed'''
+		return self._status
 
 # Action: refresh verify code
 class RefreshVerfyCode(Action):
-	def __init__(self, params):
-		Action.__init__(params)
-		pass
+	def __init__(self):
+		Action.__init__(self)
 
-	def process():
-		pass
-
-	def status():
-		return 0
+	def getFormData(self):
+		return {'act' : 'yanzm', 'time' : '20868938901403800000'}#time.time() * 1000000}
 
 # Action: fake share
 class FakeShare(Action):
-	def __init__(self, params):
-		Action.__init__(params)
-		pass
+	def __init__(self):
+		Action.__init__(self)
 
-	def process():
-		pass
-
-	def status():
-		return 0
+	def getFormData(self):
+		return {'act' : 'fenxiang', 'id' : '279'}
 
 # Action: Vote
 class Vote(Action):
-	def __init__(self, params):
-		Action.__init__(params)
-		pass
+	def __init__(self):
+		Action.__init__(self)
 
-	def process():
-		pass
-
-	def status():
-		return 0
+	def getFormData(self):
+		return {'act' : 'vote', 'id' : '279'}

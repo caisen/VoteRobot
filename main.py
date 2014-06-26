@@ -1,22 +1,25 @@
 
-import Action
+from Action import *
 
 def OneKick():
 	''' vote once'''
+	# 
 	actionQueue = [FakeShare(), RefreshVerfyCode(), Vote(), RefreshVerfyCode(), Vote()]
-		for action in actionQueue:
-			action.process()
-			if action.status() != 0:
-				return
+	for action in actionQueue:
+		action.process()
+		status = action.status()
+		print(status)
+		#if status != 200:
+		#	return
 
-def Start():
-	for true:
+#def Start():
+	#for 1:
 
 		# wait a few seconds here
 
-		OneKick();
-		
+		#OneKick();
+
 #
 # Start voting
 #
-Start()
+OneKick()
