@@ -14,8 +14,9 @@ class HttpClient:
 	def getHeaders(cls):
 		return {}
 
-	def request(self, url, headers, formData):
-		return self.http.request(url, 'POST', headers=headers, body=urllib.parse.urlencode(formData))
+	def request(self, url, metohd, headers, formData):
+		print(headers)
+		return self.http.request(url, metohd, headers=headers, body=urllib.parse.urlencode(formData))
 
 
 # create httpclient instance
