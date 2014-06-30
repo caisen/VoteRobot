@@ -12,4 +12,10 @@ class Utils:
 	def setTimestamp(self, time):
 		self.timestamp = time
 
+	def setCode(self, code):
+		self.code = code
+
+	def getCode(self):
+		return self.code
+
 utilsInstance = Utils()

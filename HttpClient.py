@@ -10,12 +10,7 @@ class HttpClient:
 	def __init__(self):
 		self.http = httplib2.Http()
 
-	@classmethod
-	def getHeaders(cls):
-		return {}
-
 	def request(self, url, metohd, headers, formData):
-		print(headers)
 		return self.http.request(url, metohd, headers=headers, body=urllib.parse.urlencode(formData))
 
 

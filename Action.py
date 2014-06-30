@@ -6,10 +6,6 @@ import time
 from HttpClient import *
 from Utils import *
 
-def ActionFactory():
-	''' action factory, generate actions object'''
-	pass
-
 #
 # Action classes
 #
@@ -37,8 +33,7 @@ class Action:
 
 	def process(self):
 		'''implement by subclasses'''
-		self.response, self.content = self.http.request(self.url, self.method, self.getHeaders(), self.getFormData()
-)
+		self.response, self.content = self.http.request(self.url, self.method, self.getHeaders(), self.getFormData())
 		self._status = self.response['status']
 
 	def status(self):
@@ -92,13 +87,38 @@ class RefreshVerfyCode(Action):
 		Action.__init__(self)
 
 	def getFormData(self):
-		print(utilsInstance.getTimestamp())
 		return {'act' : 'yanzm', 'time' : utilsInstance.getTimestamp()}
 
 	def process(self):
 		Action.process(self)
-		print(self.response)
-		print(self.content)
+		originCode = self.content.decode()
+		self._dealWithCode(originCode)
+
+	def _dealWithCode(self, originCode):
+		# filtering <span style='display:none'></span> and &nbsp
+		needContinue = True
+		while needContinue:
+			# delete span
+			beginSpanPos = originCode.find('<span')
+			if beginSpanPos == -1:
+				needContinue = False
+				break
+			else:
+				endSpanPos = originCode.find('</span>')
+				if endSpanPos == -1:
+					needContinue = False
+					break
+
+			if beginSpanPos < endSpanPos:
+				originCode = originCode[:beginSpanPos] + originCode[endSpanPos + 7:]
+			else:
+				needContinue = False
+				break
+				
+		# delete &nbsp
+		finalCode = originCode.replace('&nbsp', '')
+
+		utilsInstance.setCode(finalCode[1:3])
 
 # Action: fake share
 class FakeShare(Action):
@@ -115,4 +135,12 @@ class Vote(Action):
 		Action.__init__(self)
 
 	def getFormData(self):
-		return {'act' : 'vote', 'id' : '279'}
+		return {'act' : 'vote', 'id' : '279', 'yzm' : utilsInstance.getCode()}
+
+	def process(self):
+		Action.process(self)
+		print(self.response)
+		print(self.content)
+
+
+
