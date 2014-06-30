@@ -5,26 +5,27 @@
 import time
 from HttpClient import *
 from Utils import *
+from IPPool import *
 
 #
 # Action classes
 #
-
 # Action base class
 class Action:
-	def __init__(self):
+	def __init__(self, index):
 		self._status = 200
 		self._message = 'Succeed'
 		self.url = 'http://votes.cnr.cn/ajax.php'
 		self.method = 'POST'
 		self.http = getHtppClient()
+		self.index = index
 
 	def getHeaders(self):
 		return {'Host' : 'votes.cnr.cn', \
 				'Origin' : 'http://votes.cnr.cn', \
 				'Referer' : 'http://votes.cnr.cn/show.php?id=279', \
 				'Content-Type' : 'application/x-www-form-urlencoded', \
-				'X-Forwarded-For' : '175.152.209.24', \
+				'X-Forwarded-For' : ipPoolInstance.getIP(self.index), \
 				'Cookie' : 'PHPSESSID=afsbgsm4uokronqbdmdt130533; CNZZDATA5915424=cnzz_eid%3D279823847-1403541396-http%253A%252F%252Fvotes.cnr.cn%252F%26ntime%3D1403886826', \
 				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36' }
 
@@ -46,8 +47,8 @@ class Action:
 
 # Action: Show, get the time for refreshing verify code
 class Show(Action):
-	def __init__(self, idStr):
-		Action.__init__(self)
+	def __init__(self, index, idStr):
+		Action.__init__(self, index)
 		self.url = 'http://votes.cnr.cn/show.php?id=' + idStr
 		self.method = 'GET'
 
@@ -83,8 +84,8 @@ class Show(Action):
 
 # Action: refresh verify code
 class RefreshVerfyCode(Action):
-	def __init__(self):
-		Action.__init__(self)
+	def __init__(self, index):
+		Action.__init__(self, index)
 
 	def getFormData(self):
 		return {'act' : 'yanzm', 'time' : utilsInstance.getTimestamp()}
@@ -122,8 +123,8 @@ class RefreshVerfyCode(Action):
 
 # Action: fake share
 class FakeShare(Action):
-	def __init__(self, idStr):
-		Action.__init__(self)
+	def __init__(self, index, idStr):
+		Action.__init__(self, index)
 		self.idStr = idStr
 
 	def getFormData(self):
@@ -131,8 +132,8 @@ class FakeShare(Action):
 
 # Action: Vote
 class Vote(Action):
-	def __init__(self):
-		Action.__init__(self)
+	def __init__(self, index):
+		Action.__init__(self, index)
 
 	def getFormData(self):
 		return {'act' : 'vote', 'id' : '279', 'yzm' : utilsInstance.getCode()}
