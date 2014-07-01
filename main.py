@@ -1,32 +1,33 @@
 
+
+import time
+import random
 from Action import *
 from IPPool import *
+
 
 def OneKick(index):
 	''' vote once'''
 	print('=========Play round %d==========' % index)
-	# Show(id), FakeShare(id), RefreshVerfyCode()
+	ipPoolInstance.refresh()
 	idStr = str(279)
-	actionQueue = [Show(index, idStr), FakeShare(index, idStr), RefreshVerfyCode(index, ), Vote(index), RefreshVerfyCode(index), Vote(index)]
+	actionQueue = [Show(idStr), FakeShare(idStr), RefreshVerfyCode(), Vote(), RefreshVerfyCode(), Vote()]
 	#actionQueue = [RefreshVerfyCode()]
 	for action in actionQueue:
 		action.process()
-		#print(action.status())
-		#print(action.response)
-		#print(action.content)
+		time.sleep(random.randint(1, 2))
 		#if status != 200:
 		#	return
 
 def Start():
-	i = 0
-	while i < ipPoolInstance.getIPCount():
-		ip = ipPoolInstance.getIP(i)
+	for i in range(0, 1000):
 		# wait a few seconds here
 
 		OneKick(i);
-		i += 1
+		time.sleep(random.randint(10, 20))
 
 #
 # Start voting
 #
 Start()
+print('1000 voting Done!')

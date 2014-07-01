@@ -1,22 +1,31 @@
 #
 # IP pool
 #
-
-ip_pool = ['175.152.209.25', '175.152.209.26', '175.152.209.27', '175.152.209.28', '175.152.209.29']
+import random
 
 class IPPool:
 	'''IP pool'''
 	def __init__(self):
 		pass
 
-	def getIPCount(self):
-		return 5
+	def getCurrentIP(self):
+		return self.ip
 
-	def getIP(self, index):
-		return ip_pool[index]
+	def _genIP(self):
+		self.ip = ''
+		# #1 field
+		while True:
+			first = random.randint(10, 223)
+			if first != 127:
+				self.ip += str(first)
+				break
 
-	def refresh():
-		'''refresh succeed, return true; otherwise, return false'''
-		return true
+		# #2-#4 field
+		for i in range(0, 3):
+			num = random.randint(1, 254)
+			self.ip += '.' + str(num)
+
+	def refresh(self):
+		self._genIP()
 
 ipPoolInstance = IPPool()
