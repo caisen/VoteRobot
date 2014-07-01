@@ -13,7 +13,8 @@ from IPPool import *
 # Action base class
 class Action:
 	def __init__(self):
-		self._status = 200
+		self._status = 200 
+		self._result = 0 # 0, normal; 3, succeed; otherwise, failed
 		self._message = 'Succeed'
 		self.url = 'http://votes.cnr.cn/ajax.php'
 		self.method = 'POST'
@@ -25,7 +26,7 @@ class Action:
 				'Referer' : 'http://votes.cnr.cn/show.php?id=279', \
 				'Content-Type' : 'application/x-www-form-urlencoded', \
 				'X-Forwarded-For' : ipPoolInstance.getCurrentIP(), \
-				'Cookie' : 'PHPSESSID=afsbgsm4uokronqbdmdt130533; CNZZDATA5915424=cnzz_eid%3D279823847-1403541396-http%253A%252F%252Fvotes.cnr.cn%252F%26ntime%3D1403886826', \
+				'Cookie' : 'PHPSESSID=afsbgsm4uokronqbdmdt130647; CNZZDATA5915424=cnzz_eid%3D279823847-1403541396-http%253A%252F%252Fvotes.cnr.cn%252F%26ntime%3D1404180584', \
 				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36' }
 
 	def getFormData(self):
@@ -34,11 +35,15 @@ class Action:
 	def process(self):
 		'''implement by subclasses'''
 		self.response, self.content = self.http.request(self.url, self.method, self.getHeaders(), self.getFormData())
+		#if self.response['status'] 
 		self._status = self.response['status']
 
 	def status(self):
 		'''200, succeed; otherwise, failed'''
 		return self._status
+
+	def result(self):
+		return self._result
 
 	def message(self):
 		'''message such as succeed or failed'''
@@ -139,8 +144,8 @@ class Vote(Action):
 
 	def process(self):
 		Action.process(self)
-		print(self.response)
-		print(self.content)
+		self._result = int(self.content.decode())
+		
 
 
 
