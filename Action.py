@@ -19,21 +19,22 @@ class Action:
 		self.url = 'http://votes.cnr.cn/ajax.php'
 		self.method = 'POST'
 		self.http = getHtppClient()
-
+		# ; CNZZDATA5915424=cnzz_eid%3D279823847-1403541396-http%253A%252F%252Fvotes.cnr.cn%252F%26ntime%3D1403541396
 	def getHeaders(self):
 		return {'Host' : 'votes.cnr.cn', \
 				'Origin' : 'http://votes.cnr.cn', \
 				'Referer' : 'http://votes.cnr.cn/show.php?id=279', \
 				'Content-Type' : 'application/x-www-form-urlencoded', \
 				'X-Forwarded-For' : ipPoolInstance.getCurrentIP(), \
-				'Cookie' : 'PHPSESSID=afsbgsm4uokronqbdmdt130647; CNZZDATA5915424=cnzz_eid%3D279823847-1403541396-http%253A%252F%252Fvotes.cnr.cn%252F%26ntime%3D1404180584', \
-				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36' }
+				'Cookie' : 'PHPSESSID=' + utilsInstance.getSession(), \
+				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36'}
 
 	def getFormData(self):
 		return {}
 
 	def process(self):
 		'''implement by subclasses'''
+		print(self.getHeaders())
 		self.response, self.content = self.http.request(self.url, self.method, self.getHeaders(), self.getFormData())
 		#if self.response['status'] 
 		self._status = self.response['status']
@@ -57,7 +58,11 @@ class Show(Action):
 		self.method = 'GET'
 
 	def getHeaders(self):
-		return {'Host' : 'votes.cnr.cn'}
+		return {'Host' : 'votes.cnr.cn', \
+				'Origin' : 'http://votes.cnr.cn', \
+				'Cookie' : 'PHPSESSID=' + utilsInstance.getSession(), \
+				'X-Forwarded-For' : ipPoolInstance.getCurrentIP(), \
+				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36'}
 
 	def process(self):
 		Action.process(self)

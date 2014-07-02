@@ -4,6 +4,7 @@ import time
 import random
 from Action import *
 from IPPool import *
+import Utils
 
 backoffMulti = 0 # back off multiple when voting return error code 6
 
@@ -13,10 +14,12 @@ failedAmount = 0
 def OneKick(index):
 	''' vote once'''
 	print('=========Play round %d==========' % index)
+
 	ipPoolInstance.refresh()
+	utilsInstance.refreshSession()
+
 	idStr = str(279)
 	actionQueue = [Show(idStr), FakeShare(idStr), RefreshVerfyCode(), Vote(), Show(idStr), RefreshVerfyCode(), Vote()]
-	#actionQueue = [RefreshVerfyCode()]
 	i = 0
 	for action in actionQueue:
 
@@ -55,7 +58,7 @@ def Start():
 		OneKick(i);
 
 		global backoffMulti
-		sleepTime = random.randint(10, 20) + (50 * backoffMulti)
+		sleepTime = random.randint(10, 20) + (120 * backoffMulti)
 		print(sleepTime)
 		time.sleep(sleepTime)
 
@@ -64,3 +67,12 @@ def Start():
 #
 Start()
 print('Voting Done, succeed:%d, failed:%d' % (amount, failedAmount))
+
+
+
+
+
+
+
+
+
