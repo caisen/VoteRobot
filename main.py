@@ -5,6 +5,7 @@ import random
 from Action import *
 from IPPool import *
 import Utils
+import HttpClient
 
 backoffMulti = 0 # back off multiple when voting return error code 6
 
@@ -17,6 +18,7 @@ def OneKick(index):
 
 	ipPoolInstance.refresh()
 	utilsInstance.refreshSession()
+	refreshHttpClient()
 
 	idStr = str(279)
 	actionQueue = [Show(idStr), FakeShare(idStr), RefreshVerfyCode(), Vote(), Show(idStr), RefreshVerfyCode(), Vote()]
@@ -37,7 +39,7 @@ def OneKick(index):
 		# process action
 		action.process()
 
-		randomtime = 2
+		randomtime = 5
 		time.sleep(randomtime)
 
 		result = action.result()

@@ -34,7 +34,6 @@ class Action:
 
 	def process(self):
 		'''implement by subclasses'''
-		print(self.getHeaders())
 		self.response, self.content = self.http.request(self.url, self.method, self.getHeaders(), self.getFormData())
 		#if self.response['status'] 
 		self._status = self.response['status']

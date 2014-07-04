@@ -18,3 +18,6 @@ class HttpClient:
 httpClient = HttpClient()
 def getHtppClient():
 	return httpClient
+
+def refreshHttpClient():
+	httpClient = HttpClient()
