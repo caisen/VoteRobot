@@ -16,17 +16,18 @@ class Action:
 		self._status = 200 
 		self._result = 0 # 0, normal; 3, succeed; otherwise, failed
 		self._message = 'Succeed'
-		self.url = 'http://votes.cnr.cn/ajax.php'
+		self.url = 'http://top.chengdu.cn/acts/2014_huoguo50/base.php'
 		self.method = 'POST'
 		self.http = getHtppClient()
 		# ; CNZZDATA5915424=cnzz_eid%3D279823847-1403541396-http%253A%252F%252Fvotes.cnr.cn%252F%26ntime%3D1403541396
 	def getHeaders(self):
-		return {'Host' : 'votes.cnr.cn', \
-				'Origin' : 'http://votes.cnr.cn', \
-				'Referer' : 'http://votes.cnr.cn/show.php?id=279', \
-				'Content-Type' : 'application/x-www-form-urlencoded', \
-				'X-Forwarded-For' : ipPoolInstance.getCurrentIP(), \
-				'Cookie' : 'PHPSESSID=' + utilsInstance.getSession(), \
+		return {'Host' : 'top.chengdu.cn', \
+				'Origin' : 'http://top.chengdu.cn', \
+				'Referer' : 'http://top.chengdu.cn/acts/2014_huoguo50/', \
+				'Content-Type' : 'pplication/x-www-form-urlencoded; charset=UTF-8', \
+				'Cookie' : 'pgv_pvi=1586438144; pgv_si=s6836620288; PHPSESSID=3ba5518e67c5a2259fcf6d4b05b02e6b;', \
+				'X-Forwarded-For' : '175.152.210.79', \
+				'X-Requested-With' : 'XMLHttpRequest', \
 				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36'}
 
 	def getFormData(self):
@@ -34,6 +35,10 @@ class Action:
 
 	def process(self):
 		'''implement by subclasses'''
+		print(self.url)
+		print(self.method)
+		print(self.getHeaders())
+		print(self.getFormData())
 		self.response, self.content = self.http.request(self.url, self.method, self.getHeaders(), self.getFormData())
 		#if self.response['status'] 
 		self._status = self.response['status']
@@ -55,12 +60,13 @@ class Show(Action):
 		Action.__init__(self)
 		self.url = 'http://votes.cnr.cn/show.php?id=' + idStr
 		self.method = 'GET'
-
+#ipPoolInstance.getCurrentIP(), \
 	def getHeaders(self):
 		return {'Host' : 'votes.cnr.cn', \
 				'Origin' : 'http://votes.cnr.cn', \
-				'Cookie' : 'PHPSESSID=' + utilsInstance.getSession(), \
-				'X-Forwarded-For' : ipPoolInstance.getCurrentIP(), \
+				'Cookie' : 'pgv_pvi=1586438144; pgv_si=s6836620288; PHPSESSID=0327aaafc057073a20abcf03d13d13f6;', \
+				'X-Forwarded-For' : '175.152.210.79', \
+				'X-Requested-With' : 'XMLHttpRequest', \
 				'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36'}
 
 	def process(self):
@@ -144,11 +150,13 @@ class Vote(Action):
 		Action.__init__(self)
 
 	def getFormData(self):
-		return {'act' : 'vote', 'id' : '279', 'yzm' : utilsInstance.getCode()}
+		return {'action' : 'vote', 'id' : 33390609}
 
 	def process(self):
 		Action.process(self)
-		self._result = int(self.content.decode())
+		print(self.response)
+		print(self.content.decode())
+		#self._result = int(self.content.decode())
 		
 
 
